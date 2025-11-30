@@ -1,0 +1,128 @@
+<!-- ===================== RECIPIENT MODULE ======================== -->
+<div id="recipient" class="module">
+    <h2>Recipient</h2>
+    <form>
+        <label>Your Name</label>
+        <input type="text" placeholder="Enter your name">
+
+        <label>Item Needed</label>
+        <input type="text" placeholder="Ex: Food, Clothing">
+
+        <label>Reason</label>
+        <textarea placeholder="Explain why you need it"></textarea>
+
+        <button>Request Item</button>
+    </form>
+</div>
+
+<style>
+  :root{
+    --page-bg: #f5f7fb;
+    --surface: #ffffff;
+    --muted: #6b7280;
+    --text: #0b1220;
+    --primary: #2563eb;
+    --primary-700: #1e40af;
+    --radius: 12px;
+    --glass: rgba(11,18,32,0.04);
+    --shadow-md: 0 18px 40px rgba(11,18,32,0.06);
+    --shadow-sm: 0 8px 18px rgba(11,18,32,0.04);
+    --control-h: 46px;
+    --gap: 14px;
+    --max-w: 980px;
+  }
+
+  /* Reset & base */
+  *,*::before,*::after{box-sizing:border-box}
+  :where(body, html){margin:0;padding:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial;background:transparent;color:var(--text)}
+  a{color:inherit;text-decoration:none}
+
+  /* Module shell */
+  #recipient.module, .module {
+    max-width: var(--max-w);
+    margin: 28px auto;
+    padding: 22px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--glass);
+  }
+
+  /* Header */
+  #recipient h2{
+    margin:0 0 8px 0;
+    font-size:1.25rem;
+    font-weight:700;
+    letter-spacing:0.2px;
+  }
+  #recipient .subtitle{color:var(--muted);margin:0 0 var(--gap) 0;font-size:0.95rem}
+
+  /* Form layout - each control on its own row with spacing */
+  form{
+    display:block;
+    margin-top:12px;
+    width:100%;
+    gap:12px;
+  }
+  form > label{
+    display:block;
+    margin:12px 0 6px 0;
+    font-size:13px;
+    color:var(--muted);
+    font-weight:600;
+  }
+
+  input[type="text"], textarea{
+    width:100%;
+    min-height:44px;
+    padding:10px 12px;
+    border-radius:10px;
+    border:1px solid rgba(11,18,32,0.06);
+    background:linear-gradient(180deg,#fff,#fbfdff);
+    font-size:14px;
+    color:var(--text);
+    outline:none;
+    transition: box-shadow .12s ease, border-color .12s ease, transform .06s ease;
+  }
+  textarea{min-height:140px;resize:vertical;padding-top:10px}
+
+  input[type="text"]:focus, textarea:focus{
+    box-shadow:0 8px 28px rgba(37,99,235,0.08);
+    border-color:var(--primary);
+    transform:translateY(-1px);
+  }
+
+  /* Button */
+  button, .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:10px 16px;
+    height:var(--control-h);
+    border-radius:10px;
+    border:none;
+    background:linear-gradient(90deg,var(--primary),var(--primary-700));
+    color:#fff;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:var(--shadow-sm);
+    transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+    margin-top:16px;
+  }
+  button:hover, .btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 20px 44px rgba(37,99,235,0.12);
+  }
+  button:active, .btn:active{ transform:translateY(-1px) }
+
+  /* Small utilities */
+  .muted{color:var(--muted);font-size:13px}
+  .controls{display:flex;gap:8px;flex-wrap:wrap}
+
+  /* Make controls appear spaced one-per-line on narrow layouts */
+  @media (max-width:640px){
+    #recipient.module{padding:18px;margin:18px}
+    button, .btn{width:100%}
+  }
+</style>

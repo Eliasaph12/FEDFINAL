@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FEDF-PS04: Donation Platform</title>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .container {
+            inline-size: 100%;
+            max-inline-size: 1200px;
+            margin-inline: auto;
+            padding-inline: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding-block: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display:flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        nav a.active {
+            background: rgba(255,255,255,0.25);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08) inset;
+        }
+
+        .auth-buttons .btn {
+            padding: 10px 18px;
+            font-size: 1rem;
+            border-radius: 10px;
+            min-width: 110px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 700;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            border: none;
+        }
+
+        .btn-secondary {
+            background: #e74c3c;
+            color: white;
+            border: none;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.9)),
+                        url('https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        /* ============================
+           FEEDBACK BUTTON (FLOATING)
+           ============================ */
+        .feedback-floating-container {
+            position: fixed;
+            bottom: 130px;
+            right: 30px;
+            z-index: 9999;
+        }
+
+        .feedback-floating-btn {
+            background: var(--secondary);
+            color: white;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0px 4px 18px rgba(0,0,0,0.25);
+            transition: 0.2s ease;
+        }
+
+        .feedback-floating-btn:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0px 10px 22px rgba(0,0,0,0.3);
+        }
+
+        /* Popup */
+        .feedback-popup-box {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 290px;
+            background: white;
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0px 8px 20px rgba(0,0,0,0.18);
+            display: none;
+            animation: fadeIn .2s ease-in-out;
+        }
+
+        .feedback-floating-container:hover .feedback-popup-box {
+            display: block;
+        }
+
+        .feedback-popup-box h3 {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            color: var(--primary);
+        }
+
+        .feedback-popup-box input,
+        .feedback-popup-box textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+
+        .feedback-submit-btn {
+            width: 100%;
+            padding: 10px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        @keyframes fadeIn {
+            from { opacity:0; transform:translateY(10px); }
+            to { opacity:1; transform:translateY(0); }
+        }
+    </style>
+
+    <script src="https://kit.fontawesome.com/a2e860f8c5.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-hands-helping"></i>
+                <span>DonationConnect</span>
+            </div>
+
+            <nav>
+                <ul>
+                    <li><a href="project.html" class="active">Home</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="DonationDB.html">Donate</a></li>
+                    <li><a href="request.html">Request</a></li>
+                    <li><a href="#contact-us">Contact</a></li>
+                </ul>
+            </nav>
+
+            <div class="auth-buttons">
+                <a class="btn btn-secondary" href="login.html">Login / Sign-up</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container">
+            <h1>Connecting Generosity with Need</h1>
+            <p>DonationConnect helps connect donors with people in need.</p>
+
+            <a href="register.html" class="btn btn-primary" 
+               style="padding: 12px 26px; margin-top: 12px;">
+                <i class="fas fa-user-plus"></i> Get Started
+            </a>
+        </div>
+    </section>
+
+    <!-- ========= FEEDBACK FLOATING WIDGET ========= -->
+    <div class="feedback-floating-container">
+        <div class="feedback-floating-btn">
+            <i class="fas fa-comment-dots"></i>
+        </div>
+
+        <div class="feedback-popup-box">
+            <h3>your feedback is most valuable</h3>
+
+            <input type="text" id="fb_name" placeholder="Your Name">
+            <input type="email" id="fb_email" placeholder="Email (optional)">
+            <textarea id="fb_message" placeholder="Write feedback..." required></textarea>
+
+            <button class="feedback-submit-btn" onclick="submitFeedback()">Submit</button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <h3 id="contact-us">Contact Us</h3>
+            <p>info@donationconnect.org</p>
+        </div>
+    </footer>
+
+    <!-- SCRIPT -->
+    <script>
+        function submitFeedback() {
+            const name = document.getElementById("fb_name").value.trim();
+            const email = document.getElementById("fb_email").value.trim();
+            const message = document.getElementById("fb_message").value.trim();
+
+            if (!message) {
+                alert("Please enter your feedback.");
+                return;
+            }
+
+            alert("Thank you! Your feedback has been submitted ");
+
+            document.getElementById("fb_name").value = "";
+            document.getElementById("fb_email").value = "";
+            document.getElementById("fb_message").value = "";
+        }
+    </script>
+
+</body>
+</html>

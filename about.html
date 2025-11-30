@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Donation Connect</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root{--primary:#2c3e50;--secondary:#3498db;--accent:#e74c3c;--light:#f5f7fa}
+    *{box-sizing:border-box;margin:0;padding:0;font-family:Segoe UI, Tahoma, Geneva, Verdana, sans-serif}
+    body{background:linear-gradient(180deg,#eef3f7 0%, #ffffff 100%);color:#222;min-height:100vh;padding:36px}
+    .container{max-width:980px;margin:0 auto}
+
+    .top{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+    .logo{display:flex;align-items:center;gap:10px}
+    .logo i{color:var(--primary);font-size:32px}
+    h1{font-size:24px;color:var(--primary)}
+
+    .card{background:#fff;border-radius:12px;padding:26px;box-shadow:0 8px 24px rgba(22,28,34,0.06)}
+    /* hero layout */
+    .hero-grid{display:grid;grid-template-columns:1fr 420px;gap:26px;align-items:center}
+    .hero-illustration{display:block;margin-left:auto;border-radius:10px;overflow:hidden;border:1px solid #e9f2fb;background:linear-gradient(180deg,#fff,#f4fbff);box-shadow:inset 0 1px 0 rgba(255,255,255,0.6)}
+    .hero-illustration img{display:block;width:100%;height:auto}
+    .kpis{display:flex;gap:14px;margin-top:16px;flex-wrap:wrap}
+    .kpi{flex:1 1 120px;background:#f8fbff;padding:12px;border-radius:10px;border:1px solid #eef7ff;text-align:center}
+    .kpi strong{display:block;font-size:18px;color:#2c3e50}
+    .lead{color:#6b7280;margin-bottom:14px}
+    .section{margin-top:18px}
+    .visuals{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px;align-items:start}
+    /* small, prominent callout / note style */
+    .callout{display:flex;gap:14px;align-items:flex-start;background:linear-gradient(180deg,#fffaf6,#fbfdff);border-radius:10px;padding:14px;border:1px solid rgba(243,156,18,0.12);margin-top:20px}
+    .callout .icon{width:48px;height:48px;background:linear-gradient(180deg,#ffdf9b,#ffc857);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#7a3c00;font-size:20px;flex:0 0 48px}
+    .callout p{margin:0;color:#223044}
+    .callout small{display:block;margin-top:6px;color:#6b7280}
+    .chart-card{background:linear-gradient(180deg,#ffffff,#fbfdff);border:1px solid #eaf3fb;padding:14px;border-radius:10px;box-shadow:0 6px 18px rgba(16,24,40,0.04);min-height:160px}
+    .chart-title{font-weight:700;color:#284a7a;margin-bottom:10px;font-size:14px}
+    .chart-desc{font-size:13px;color:#6b7280;margin-top:8px}
+    .section h2{font-size:18px;color:#2c3e50;margin-bottom:12px}
+    .step-list{display:grid;gap:10px}
+    .step{background:#fbfdff;border:1px solid #eef3f8;padding:12px;border-radius:8px}
+    .step strong{color:var(--secondary)}
+
+    a.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:8px;text-decoration:none;font-weight:700}
+    .btn-outline{border:1px solid #e6eef9;color:var(--primary);background:white}
+    .btn-primary{background:var(--secondary);color:#ffffff}
+
+    .back{display:inline-flex;align-items:center;gap:8px;margin-bottom:12px;color:#6b7280;text-decoration:none}
+    footer{margin-top:22px;text-align:center;color:#6b7280;font-size:13px}
+
+    @media (max-width:980px){
+      .visuals{grid-template-columns:repeat(2,1fr)}
+      .hero-grid{grid-template-columns:1fr 320px}
+    }
+    @media (max-width:640px){
+      .top{flex-direction:column;align-items:flex-start}
+      .visuals{grid-template-columns:1fr}
+      .hero-grid{grid-template-columns:1fr}
+      .hero-illustration{margin:14px 0 0 0}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="project.html" class="back"><i class="fas fa-arrow-left"></i> Back to Home</a>
+
+    <div class="top">
+      <div class="logo"><i class="fas fa-hands-helping"></i></div>
+      <div>
+        <h1>About DonationConnect</h1>
+        <div class="lead">A simple, reliable platform connecting donors with people and groups in need — fast, transparent and community driven.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section">
+        <!-- Professional hero: left = text, right = illustration -->
+        <div class="hero-grid">
+          <div>
+            <h2>Helping communities quickly and safely</h2>
+            <p class="lead">DonationConnect simplifies giving — quickly list what you can give, search for nearby requests, and coordinate safe handoffs. Our lightweight workflow keeps everything transparent and low-friction.</p>
+
+            <div class="kpis" aria-hidden="false">
+              <div class="kpi"><strong>12k+</strong><small>Donations made</small></div>
+              <div class="kpi"><strong>4k+</strong><small>Volunteers & groups</small></div>
+              <div class="kpi"><strong>98%</strong><small>Successful deliveries</small></div>
+            </div>
+
+            <div style="margin-top:16px;display:flex;gap:10px;align-items:center">
+              <a href="register.html" class="btn btn-primary" aria-label="Create account"><i class="fas fa-user-plus"></i> Create free account</a>
+              <a href="login.html" class="btn btn-outline" aria-label="Sign in"><i class="fas fa-sign-in-alt"></i> Sign in</a>
+            </div>
+          </div>
+
+          <div class="hero-illustration" role="img" aria-label="Donation illustration">
+            <picture>
+              <source srcset="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='380' viewBox='0 0 600 380'><defs><linearGradient id='a' x1='0' x2='1' y1='0' y2='1'><stop offset='0' stop-color='%233498db'/><stop offset='1' stop-color='%23a7f3d0'/></linearGradient></defs><rect width='100%' height='100%' fill='url(%23a)' rx='8'/><g fill='%23fff' font-family='Segoe UI, sans-serif'><text x='40' y='70' font-size='28' font-weight='700'>DonationConnect</text><text x='40' y='110' font-size='16' fill-opacity='.9'>Connecting donors and communities — safe, fast, transparent</text></g><g opacity='.9'><rect x='40' y='150' width='140' height='18' rx='9' fill='%23ffffff55'></rect><rect x='200' y='150' width='300' height='18' rx='9' fill='%23ffffff44'></rect><rect x='40' y='180' width='320' height='18' rx='9' fill='%23ffffff44'></rect></g></svg>" type="image/svg+xml">
+              <img src="Case/src/assets/image.png" alt="Donation illustration (PNG fallback)"/>
+            </picture>
+          </div>
+
+      <div class="section">
+        <h2>What DonationConnect does</h2>
+        <p>DonationConnect helps individuals and organizations donate or request essential items such as food, clothing, and medical supplies. The platform offers a simple flow to post donation offers or requests and helps match donors with nearby recipients during everyday needs or emergencies.</p>
+      </div>
+
+      <div class="section">
+        <h2>Who it's for</h2>
+        <ul>
+          <li>People who want to donate items to help others</li>
+          <li>Community groups or shelters that accept donations</li>
+          <li>Individuals seeking help or requesting specific items</li>
+          <li>Organizers and volunteers coordinating collection and distribution</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>How to use DonationConnect</h2>
+        <div class="step-list">
+          <div class="step"><strong>1. Create an account</strong> — Click "Register" in the header and complete the form to create your free account.
+          </div>
+          <div class="step"><strong>2. Sign in</strong> — Use the "Login" button to sign in and access member features.</div>
+          <div class="step"><strong>3. Choose a role</strong> — Select whether you want to donate or request assistance and follow the on-screen flow.</div>
+          <div class="step"><strong>4. Post a listing</strong> — Add details about the item or need (description, condition, photos, pickup/delivery options).</div>
+          <div class="step"><strong>5. Connect</strong> — Interested donors/recipients can message or contact you (this demo uses simple click actions; connect features can be added later).</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Safety & recommendations</h2>
+        <ul>
+          <li>Verify recipient or donor details before sharing personal information.</li>
+          <li>Meet in public, safe places when exchanging items.</li>
+          <li>Prefer contactless handoff for hygiene and safety where possible.</li>
+        </ul>
+      </div>
+
+      <!-- Donation visuals / graphics (small inline charts + illustration) -->
+      <div class="section">
+        <h2>Donation insights</h2>
+        <p class="lead">A quick snapshot of donation activity and categories on DonationConnect (demo data).</p>
+
+        <div class="visuals" role="region" aria-label="Donation charts and statistics">
+          <!-- Donations over time (line chart) -->
+          <div class="chart-card" aria-hidden="false">
+            <div class="chart-title">Donations over the year</div>
+            <svg viewBox="0 0 320 120" width="100%" height="120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Line chart showing donations over 12 months">
+              <defs>
+                <linearGradient id="g1" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0" stop-color="#35a4fc" stop-opacity="0.6"/>
+                  <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <rect width="100%" height="100%" fill="#ffffff00"/>
+              <polyline fill="url(#g1)" stroke="#1985d8" stroke-width="2" points="0,100 30,92 60,85 90,64 120,72 150,50 180,52 210,36 240,44 270,28 300,18 320,14"/>
+              <!-- grid -->
+              <g stroke="#eef6ff" stroke-width="1">
+                <line x1="0" y1="20" x2="320" y2="20" />
+                <line x1="0" y1="40" x2="320" y2="40" />
+                <line x1="0" y1="60" x2="320" y2="60" />
+                <line x1="0" y1="80" x2="320" y2="80" />
+                <line x1="0" y1="100" x2="320" y2="100" />
+              </g>
+              <!-- dots for months -->
+              <g fill="#1985d8">
+                <circle cx="0" cy="100" r="3" />
+                <circle cx="30" cy="92" r="3" />
+                <circle cx="60" cy="85" r="3" />
+                <circle cx="90" cy="64" r="3" />
+                <circle cx="120" cy="72" r="3" />
+                <circle cx="150" cy="50" r="3" />
+                <circle cx="180" cy="52" r="3" />
+                <circle cx="210" cy="36" r="3" />
+                <circle cx="240" cy="44" r="3" />
+                <circle cx="270" cy="28" r="3" />
+                <circle cx="300" cy="18" r="3" />
+                <circle cx="320" cy="14" r="3" />
+              </g>
+            </svg>
+            <div class="chart-desc">Monthly donations trending upwards — peak in winter donation drives.</div>
+          </div>
+
+          <!-- Category breakdown (bar chart) -->
+          <div class="chart-card">
+            <div class="chart-title">Donation categories (count)</div>
+            <svg viewBox="0 0 320 120" width="100%" height="120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bar chart showing donation category counts">
+              <!-- bars -->
+              <rect x="14" y="40" width="40" height="60" rx="6" fill="#f97316"/>
+              <rect x="74" y="28" width="40" height="72" rx="6" fill="#fb923c"/>
+              <rect x="134" y="6" width="40" height="94" rx="6" fill="#fdba74"/>
+              <rect x="194" y="52" width="40" height="48" rx="6" fill="#34d399"/>
+              <rect x="254" y="74" width="40" height="26" rx="6" fill="#60a5fa"/>
+              <!-- labels under bars -->
+              <g font-size="10" fill="#6b7280" text-anchor="middle">
+                <text x="34" y="112">Food</text>
+                <text x="94" y="112">Clothes</text>
+                <text x="154" y="112">Funds</text>
+                <text x="214" y="112">Hygiene</text>
+                <text x="274" y="112">Other</text>
+              </g>
+            </svg>
+            <div class="chart-desc">Distribution of donation items — Funds and Food often lead in numbers.</div>
+          </div>
+
+          <!-- Distribution (pie chart) -->
+          <div class="chart-card">
+            <div class="chart-title">Donor types distribution</div>
+            <svg viewBox="0 0 140 140" width="100%" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pie chart showing donor type distribution">
+              <g transform="translate(70,70)">
+                <circle r="60" fill="#f3f6fb"/>
+                <!-- slice 1: Individuals 55% -->
+                <path d="M60 0 A60 60 0 0 1  -12.6 58.7 L 0 0" fill="#60a5fa"></path>
+                <!-- slice 2: Organizations 30% -->
+                <path d="M-12.6 58.7 A60 60 0 0 1 -48.5 -39.6 L 0 0" fill="#34d399"></path>
+                <!-- slice 3: Community Groups 15% -->
+                <path d="M-48.5 -39.6 A60 60 0 0 1 60 0 L 0 0" fill="#fb923c"></path>
+              </g>
+              <g transform="translate(4,12)" font-size="12" fill="#374151">
+                <rect x="100" y="22" width="10" height="10" fill="#60a5fa" rx="2"/>
+                <text x="116" y="31">Individuals — 55%</text>
+                <rect x="100" y="44" width="10" height="10" fill="#34d399" rx="2"/>
+                <text x="116" y="53">Organizations — 30%</text>
+                <rect x="100" y="66" width="10" height="10" fill="#fb923c" rx="2"/>
+                <text x="116" y="75">Community groups — 15%</text>
+              </g>
+            </svg>
+            <div class="chart-desc">Who is donating — individuals make up the largest share in this demo snapshot.</div>
+          </div>
+        </div>
+      </div>
+      <div class="callout" role="note" aria-label="Support request">
+        <div class="icon" aria-hidden="true"><i class="fas fa-hands-heart"></i></div>
+        <div>
+          <p style="font-weight:700;font-size:15px">Please help those in need through this platform.</p>
+          <small>Every contribution — big or small — makes a real difference. Use Donate to offer items, or Request if you need assistance. Thank you for supporting our community.</small>
+        </div>
+      </div>
+      </div>
+
+      <footer>
+        <p>Questions, ideas or partnership requests? Reach out via the Contact link in the header.</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

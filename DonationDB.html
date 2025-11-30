@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f4f4f4;
+        }
+        .container {
+            width: 75%;
+            margin: auto;
+            margin-top: 30px;
+            padding: 25px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #aaa;
+        }
+        h2 {
+            text-align: center;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border: 1px solid #777;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        table {
+            width: 100%;
+            margin-top: 25px;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #555;
+            text-align: center;
+        }
+        th {
+            background: #333;
+            color: white;
+        }
+        .edit-btn {
+            background: #ffc107;
+        }
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+        .edit-btn:hover {
+            background: #d39e00;
+        }
+        .delete-btn:hover {
+            background: #b52a37;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Donation Connect</h2>
+
+    <!-- user state bar: shows signed-in user or sign-in/register options -->
+    <div id="userBar" style="display:flex;justify-content:space-between;align-items:center;margin:12px 0;">
+        <div id="userInfo"></div>
+        <div id="authActions"></div>
+    </div>
+
+    <input type="hidden" id="editIndex">
+
+    <label>Donor Name</label>
+    <input type="text" id="name" placeholder="Enter donor name">
+
+    <label>Age</label>
+    <input type="number" id="age" placeholder="Enter donor age">
+
+    <!-- amount input shown only when 'Money' is selected -->
+    <div id="amountGroup" style="display:none;">
+        <label>Donation Amount (₹)</label>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <input type="number" id="amount" placeholder="Enter amount" min="0" step="0.01" style="flex:1;max-width:260px;">
+            <div id="amountPreview" style="font-weight:700;color:#2c3e50;">₹0.00</div>
+        </div>
+        
+        <!-- Payment method shown inline with amount for Money donations -->
+        <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            <label for="amountMode" style="margin-right:6px;font-weight:600">Payment method</label>
+            <select id="amountMode" style="padding:8px;border-radius:6px;border:1px solid #e6e9ee;min-width:160px">
+                <option value="">Select method</option>
+                <option>Cash</option>
+                <option>UPI</option>
+                <option>Bank Transfer</option>
+                <option>Cheque</option>
+            </select>
+        </div>
+    </div>
+
+    <label>Purpose</label>
+    <input type="text" id="purpose" placeholder="Enter purpose">
+
+    <label>Pickup Address <span style="color:#c0392b">*</span></label>
+    <input type="text" id="pickupAddress" placeholder="Enter pickup address (required)">
+
+    <label>Destination Address <span style="color:#c0392b">*</span></label>
+    <input type="text" id="deliveryAddress" placeholder="Enter delivery address / recipient location (required)">
+
+    <!-- main Payment Mode removed — payment method is shown inline with amount for Money donations -->
+
+    <label>Type of Donation</label>
+    <select id="donationType">
+        <option value="">Select type</option>
+        <option>Cloth</option>
+        <option>Food</option>
+        <option>Goods</option>
+        <option>Money</option>
+        <option>Other</option>
+    </select>
+
+    <button onclick="saveDonation()" id="submitBtn">Add Donation</button>
+
+    <h3>Donation Records</h3>
+    <table id="donationTable">
+        <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Amount</th>
+            <th>Purpose</th>
+            <th>Pickup Address</th>
+            <th>Delivery Address</th>
+            <th>Mode</th>
+            <th>Donation Type</th>
+            <th>Actions</th>
+        </tr>
+    </table>
+
+    <!--
+    Insert this block where you want the amount + tax calculator (e.g. DonationDB.html).
+    It shows GST breakdown for India (CGST+SGST for intra-state, IGST for inter-state),
+    configurable GST rate, and live updates when amount/rate/type changes.
+    -->
+    <div id="gst-calculator" style="max-width:520px;margin:12px 0;font-family:Inter,system-ui,Arial">
+      <label style="display:block;font-weight:600;margin-bottom:6px">Enter Amount (INR)</label>
+      <input id="amountInput" type="number" min="0" step="0.01" placeholder="0.00" style="width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:14px" />
+
+      <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
+        <label style="font-size:13px;color:#555;margin:0 6px 0 0">GST Rate</label>
+        <select id="gstRate" style="padding:8px;border-radius:8px;border:1px solid #ddd">
+          <option value="0">0%</option>
+          <option value="5">5%</option>
+          <option value="12">12%</option>
+          <option value="18" selected>18%</option>
+          <option value="28">28%</option>
+        </select>
+
+        <label style="font-size:13px;color:#555;margin-left:12px">Place of supply</label>
+        <select id="supplyType" style="padding:8px;border-radius:8px;border:1px solid #ddd">
+          <option value="intra">Intra-state (CGST + SGST)</option>
+          <option value="inter">Inter-state (IGST)</option>
+        </select>
+      </div>
+
+      <div id="gstResult" style="margin-top:12px;border-radius:8px;padding:12px;background:#fbfdff;border:1px solid #eef2f6;display:none">
+        <div style="display:flex;justify-content:space-between;color:#666;margin-bottom:6px">
+          <div>Taxable value</div><div id="taxableValue">₹0.00</div>
+        </div>
+
+        <div id="cgstRow" style="display:none;justify-content:space-between;color:#333;margin-bottom:6px;display:flex">
+          <div>CGST</div><div id="cgstAmt">₹0.00</div>
+        </div>
+
+        <div id="sgstRow" style="display:none;justify-content:space-between;color:#333;margin-bottom:6px;display:flex">
+          <div>SGST</div><div id="sgstAmt">₹0.00</div>
+        </div>
+
+        <div id="igstRow" style="display:none;justify-content:space-between;color:#333;margin-bottom:6px;display:flex">
+          <div>IGST</div><div id="igstAmt">₹0.00</div>
+        </div>
+
+        <div style="border-top:1px dashed #e6eefc;margin-top:8px;padding-top:8px;display:flex;justify-content:space-between;font-weight:700">
+          <div>Total tax</div><div id="totalTax">₹0.00</div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:1.05rem">
+          <div>Grand total</div><div id="grandTotal" style="font-weight:800">₹0.00</div>
+        </div>
+
+        <div id="roundNote" style="margin-top:8px;color:#666;font-size:13px"></div>
+      </div>
+    </div>
+
+    <script>
+    (function(){
+      const el = id => document.getElementById(id);
+      const amountInput = el('amountInput');
+      const gstRate = el('gstRate');
+      const supplyType = el('supplyType');
+      const gstResult = el('gstResult');
+      const cgstRow = el('cgstRow'), sgstRow = el('sgstRow'), igstRow = el('igstRow');
+      const taxableValue = el('taxableValue'), cgstAmt = el('cgstAmt'), sgstAmt = el('sgstAmt'), igstAmt = el('igstAmt');
+      const totalTax = el('totalTax'), grandTotal = el('grandTotal'), roundNote = el('roundNote');
+
+      const fmt = (v) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 2 }).format(v || 0);
+
+      function calculate() {
+        const amount = parseFloat(amountInput.value);
+        if (!isFinite(amount) || amount <= 0) {
+          gstResult.style.display = 'none';
+          return;
+        }
+
+        gstResult.style.display = 'block';
+        const rate = parseFloat(gstRate.value) || 0;
+        const type = supplyType.value; // 'intra' or 'inter'
+        const taxable = round2(amount);
+        taxableValue.textContent = fmt(taxable);
+
+        let cgst = 0, sgst = 0, igst = 0;
+
+        if (rate === 0) {
+          // no tax
+        } else if (type === 'intra') {
+          // split equally between CGST & SGST
+          const halfRate = rate / 2;
+          cgst = round2(taxable * (halfRate / 100));
+          sgst = round2(taxable * (halfRate / 100));
+          igst = 0;
+          cgstRow.style.display = 'flex';
+          sgstRow.style.display = 'flex';
+          igstRow.style.display = 'none';
+        } else {
+          // inter-state -> IGST
+          igst = round2(taxable * (rate / 100));
+          cgst = 0; sgst = 0;
+          cgstRow.style.display = 'none';
+          sgstRow.style.display = 'none';
+          igstRow.style.display = 'flex';
+        }
+
+        cgstAmt.textContent = fmt(cgst);
+        sgstAmt.textContent = fmt(sgst);
+        igstAmt.textContent = fmt(igst);
+
+        const totalTaxVal = round2(cgst + sgst + igst);
+        totalTax.textContent = fmt(totalTaxVal);
+
+        const grand = round2(taxable + totalTaxVal);
+        grandTotal.textContent = fmt(grand);
+
+        // show rounding difference if fractional paise rounding occurred
+        const preciseGrand = taxable + (taxable * rate / 100);
+        const roundingDiff = round2(grand - preciseGrand);
+        if (Math.abs(roundingDiff) >= 0.005) {
+          roundNote.textContent = 'Rounded total difference: ' + fmt(roundingDiff);
+        } else {
+          roundNote.textContent = '';
+        }
+      }
+
+      function round2(v){ return Math.round((v + Number.EPSILON) * 100) / 100; }
+
+      amountInput.addEventListener('input', calculate);
+      gstRate.addEventListener('change', calculate);
+      supplyType.addEventListener('change', calculate);
+
+      // initialize if amount prefilled
+      calculate();
+    })();
+    </script>
+</div>
+
+<script>
+    let donations = JSON.parse(localStorage.getItem("donations")) || [];
+
+    // get currently signed-in user (client-side demo auth stored in localStorage)
+    function getCurrentUser(){
+        try{ return JSON.parse(localStorage.getItem('currentUser')) || null; }catch(e){ return null; }
+    }
+
+    function renderUserBar(){
+        const user = getCurrentUser();
+        const info = document.getElementById('userInfo');
+        const actions = document.getElementById('authActions');
+        if (!info || !actions) return;
+        if (user){
+            info.innerHTML = `<strong>Signed in as</strong> ${user.fullname || user.email}`;
+            actions.innerHTML = `<button class="btn" style="background:#e74c3c;color:#fff;padding:8px 10px;border-radius:6px;border:none;" onclick="signOut()">Sign out</button>`;
+        } else {
+            info.innerHTML = `<span style="color:#666">You are not signed in</span>`;
+            actions.innerHTML = `<a href="login.html" class="btn" style="background:#007bff;color:#fff;padding:8px 10px;border-radius:6px;text-decoration:none;">Sign in</a> <a href="register.html" class="btn" style="background:#fff;border:1px solid #007bff;color:#007bff;padding:8px 10px;border-radius:6px;text-decoration:none;">Register</a>`;
+        }
+    }
+
+    function signOut(){
+        localStorage.removeItem('currentUser');
+        alert('Signed out');
+        renderUserBar();
+    }
+
+    function displayDonations() {
+        let table = document.getElementById("donationTable");
+        table.innerHTML = `
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Amount</th>
+                <th>Purpose</th>
+                <th>Pickup Address</th>
+                <th>Delivery Address</th>
+                <th>Mode</th>
+                <th>Donation Type</th>
+                <th>Actions</th>
+            </tr>
+        `;
+
+        donations.forEach((donation, index) => {
+            let row = table.insertRow();
+            row.insertCell(0).innerHTML = donation.name;
+            row.insertCell(1).innerHTML = donation.age;
+            row.insertCell(2).innerHTML = donation.amount;
+            row.insertCell(3).innerHTML = donation.purpose;
+            row.insertCell(4).innerHTML = donation.pickupAddress || '';
+            row.insertCell(5).innerHTML = donation.deliveryAddress || '';
+            row.insertCell(6).innerHTML = donation.mode || '';
+            row.insertCell(7).innerHTML = donation.donationType || '';
+
+            row.insertCell(8).innerHTML = `
+                <button class='edit-btn' onclick="editDonation(${index})">Edit</button>
+                <button class='delete-btn' onclick="deleteDonation(${index})">Delete</button>
+            `;
+        });
+    }
+
+    function saveDonation() {
+        let name = document.getElementById("name").value;
+        let age = document.getElementById("age").value;
+        let amount = document.getElementById("amount").value;
+        let purpose = document.getElementById("purpose").value;
+        let pickupAddress = document.getElementById("pickupAddress").value;
+        let deliveryAddress = document.getElementById("deliveryAddress").value;
+        let donationType = document.getElementById("donationType").value;
+        let editIndex = document.getElementById("editIndex").value;
+
+        // amount is required only when donation type is Money; mode is read from the inline selector for Money
+        const isMoney = donationType && donationType.toLowerCase() === 'money';
+        let mode = '';
+        if (isMoney) {
+            const amountModeEl = document.getElementById('amountMode');
+            mode = amountModeEl ? amountModeEl.value : '';
+            if (!mode) { alert('Please select a payment method for Money donations.'); return; }
+        }
+
+        // require sign-in
+        const currentUser = getCurrentUser();
+        if (!currentUser) {
+            // ask the user whether they want to sign in or register
+            const gotoLogin = confirm('You must be signed in to add donations. Click OK to sign in, Cancel to register.');
+            if (gotoLogin) window.location.href = 'login.html'; else window.location.href = 'register.html';
+            return;
+        }
+
+        if (!name || !age || !purpose || !donationType || !pickupAddress || !deliveryAddress) {
+            alert("Please fill all required fields (name, age, purpose, donation type, pickup address, destination address).");
+            return;
+        }
+        if (isMoney && (!amount || Number(amount) <= 0)) {
+            alert("Please enter a valid donation amount when the type is Money.");
+            return;
+        }
+
+        // attach submitting user email for traceability
+        let data = { name, age, amount, purpose, pickupAddress, deliveryAddress, mode, donationType, submittedBy: currentUser.email || currentUser.fullname || 'unknown' };
+
+        if (editIndex === "") {
+            donations.push(data);
+        } else {
+            donations[editIndex] = data;
+            document.getElementById("submitBtn").innerText = "Add Donation";
+            document.getElementById("editIndex").value = "";
+        }
+
+        localStorage.setItem("donations", JSON.stringify(donations));
+        clearFields();
+        displayDonations();
+    }
+
+    function editDonation(index) {
+        let d = donations[index];
+
+        document.getElementById("name").value = d.name;
+        document.getElementById("age").value = d.age;
+        document.getElementById("amount").value = d.amount;
+        // set inline payment method when editing (if present)
+        const amtMode = document.getElementById('amountMode');
+        if (amtMode) amtMode.value = d.mode || '';
+        // update preview immediately
+        const amountPreviewEl = document.getElementById('amountPreview');
+        if (amountPreviewEl) amountPreviewEl.innerText = formatCurrency(d.amount);
+        document.getElementById("purpose").value = d.purpose;
+        document.getElementById("pickupAddress").value = d.pickupAddress || '';
+        document.getElementById("deliveryAddress").value = d.deliveryAddress || '';
+        document.getElementById("donationType").value = d.donationType;
+        // show amount field only when editing Money donations
+        toggleAmountVisibility(d.donationType);
+
+        document.getElementById("editIndex").value = index;
+        document.getElementById("submitBtn").innerText = "Update Donation";
+    }
+
+    function deleteDonation(index) {
+        if (confirm("Are you sure you want to delete this record?")) {
+            donations.splice(index, 1);
+            localStorage.setItem("donations", JSON.stringify(donations));
+            displayDonations();
+        }
+    }
+
+    function clearFields() {
+        document.getElementById("name").value = "";
+        document.getElementById("age").value = "";
+        document.getElementById("amount").value = "";
+        document.getElementById("purpose").value = "";
+        // main payment mode removed — inline amountMode will hold payment method for Money donations
+        const amtMode2 = document.getElementById('amountMode');
+        if (amtMode2) amtMode2.value = '';
+        document.getElementById("donationType").value = "";
+        document.getElementById("pickupAddress").value = "";
+        document.getElementById("deliveryAddress").value = "";
+        // ensure amount field hidden when cleared
+        toggleAmountVisibility('');
+    }
+
+    // helper: show/hide amount input when donation type is Money
+    function toggleAmountVisibility(donationType) {
+        const group = document.getElementById('amountGroup');
+        const isMoney = donationType && donationType.toLowerCase() === 'money';
+        if (isMoney) {
+            group.style.display = 'block';
+        } else {
+            group.style.display = 'none';
+            // clear hidden amount
+            const amt = document.getElementById('amount');
+            if (amt) amt.value = '';
+        }
+    }
+
+    // initialize
+    document.getElementById('donationType').addEventListener('change', function(e){
+        toggleAmountVisibility(e.target.value);
+    });
+
+    // amount preview formatting and behavior
+    const amountInput = document.getElementById('amount');
+    const amountPreview = document.getElementById('amountPreview');
+    function formatCurrency(n){
+        if (!n && n !== 0) return '₹0.00';
+        const num = Number(n);
+        if (Number.isNaN(num)) return '₹0.00';
+        return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 2 }).format(num);
+    }
+
+    // update preview when input changes
+    if (amountInput){
+        amountInput.addEventListener('input', function(e){
+            amountPreview.innerText = formatCurrency(e.target.value);
+        });
+    }
+
+    // inline amount payment select is used for Money donations; no separate top-level payment mode exists
+
+    // (quick amount buttons removed) - payment method select will be used instead
+
+    displayDonations();
+    // show user sign-in status
+    renderUserBar();
+</script>
+
+</body>
+</html>

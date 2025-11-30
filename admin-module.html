@@ -1,0 +1,152 @@
+<!-- ===================== ADMIN MODULE ======================== -->
+<div id="admin" class="module">
+    <h2>Admin </h2>
+    <form>
+        <label>Manage Donation Drive</label>
+        <input type="text" placeholder="Drive Name">
+
+        <label>Description</label>
+        <textarea placeholder="Enter drive details"></textarea>
+
+        <button>Save Drive</button>
+    </form>
+
+    <br>
+
+    <form>
+        <label>Approve User Accounts</label>
+        <select>
+            <option>Donor - John</option>
+            <option>Recipient - Priya</option>
+            <option>Logistics - David</option>
+        </select>
+        <button>Approve</button>
+    </form>
+</div>
+
+<style>
+  :root{
+    --bg: #f6f8fb;
+    --surface: #ffffff;
+    --muted: #6b7280;
+    --text: #0b1220;
+    --primary: #2563eb;
+    --primary-700: #1e40af;
+    --danger: #e11d48;
+    --radius: 12px;
+    --glass: rgba(11,18,32,0.04);
+    --shadow-lg: 0 18px 40px rgba(11,18,32,0.06);
+    --shadow-sm: 0 8px 18px rgba(11,18,32,0.04);
+    --gap: 14px;
+    --control-height: 44px;
+  }
+
+  /* Reset */
+  *{box-sizing:border-box}
+  :where(body, html){margin:0;padding:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial; color:var(--text); background:transparent}
+  a{color:inherit}
+
+  /* Module shell */
+  .module{
+    max-width:980px;
+    margin:28px auto;
+    padding:26px;
+    background:var(--surface);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow-lg);
+    border:1px solid var(--glass);
+  }
+
+  /* Header */
+  #admin h2{
+    margin:0 0 8px 0;
+    font-size:1.25rem;
+    font-weight:700;
+    letter-spacing:0.2px;
+  }
+  .module p, .module .subtitle{
+    margin:0 0 var(--gap) 0;
+    color:var(--muted);
+    font-size:0.95rem;
+  }
+
+  /* Forms */
+  form{margin-top:12px}
+  .form-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:12px}
+  label{
+    display:block;
+    font-size:13px;
+    color:var(--muted);
+    margin-bottom:6px;
+    font-weight:600;
+  }
+  input[type="text"], textarea, select{
+    width:100%;
+    min-height:var(--control-height);
+    padding:10px 12px;
+    border-radius:10px;
+    border:1px solid rgba(11,18,32,0.06);
+    background:linear-gradient(180deg,#fff,#fbfdff);
+    font-size:14px;
+    color:var(--text);
+    outline: none;
+    transition: box-shadow .12s ease, border-color .12s ease, transform .08s ease;
+  }
+  textarea{min-height:120px;resize:vertical;padding-top:10px}
+  input:focus, textarea:focus, select:focus{
+    box-shadow:0 6px 20px rgba(37,99,235,0.08);
+    border-color:var(--primary);
+    transform:translateY(-1px);
+  }
+
+  /* Buttons */
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    padding:10px 14px;
+    height:44px;
+    border-radius:10px;
+    border:none;
+    background:linear-gradient(90deg,var(--primary),var(--primary-700));
+    color:#fff;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:var(--shadow-sm);
+    transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+  }
+  .btn:hover{ transform:translateY(-3px); box-shadow:0 18px 40px rgba(37,99,235,0.12) }
+  .btn.ghost{
+    background:transparent;
+    color:var(--primary);
+    border:1px solid rgba(37,99,235,0.12);
+    box-shadow:none;
+    font-weight:600;
+  }
+  .btn.danger{
+    background: linear-gradient(90deg,var(--danger), #b91c3b);
+  }
+
+  /* Compact controls */
+  .control-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+
+  /* Tables / lists */
+  .table{width:100%;border-collapse:collapse;margin-top:12px}
+  .table th,.table td{padding:10px 12px;text-align:left;border-bottom:1px solid rgba(11,18,32,0.04);font-size:14px}
+  .table th{font-weight:700;color:var(--muted);background:transparent}
+  .table tr:hover td{background:rgba(37,99,235,0.02)}
+
+  /* Utility */
+  .muted{color:var(--muted);font-size:13px}
+  .actions{display:flex;gap:10px;align-items:center}
+  .small{font-size:13px}
+
+  /* Responsive tweaks */
+  @media (max-width:640px){
+    .module{padding:18px;margin:18px}
+    .form-row{grid-template-columns:1fr}
+    #admin h2{font-size:1.125rem}
+    .btn{height:42px;padding:10px 12px}
+  }
+</style>

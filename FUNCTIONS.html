@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>How it works?</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    body{font-family:Inter,system-ui,Arial,sans-serif;margin:28px;background:#f7fafc;color:#0b1220}
+    .wrap{max-width:980px;margin:0 auto;background:#fff;padding:22px;border-radius:12px;box-shadow:0 14px 36px rgba(11,18,32,0.06)}
+    h1{margin:0 0 12px;font-size:20px}
+    h2{font-size:16px;margin:18px 0 8px}
+    p{margin:0 0 12px;color:#6b7280}
+    ul{margin:6px 0 12px 20px}
+    code{background:#f1f5f9;padding:2px 6px;border-radius:6px;font-size:90%}
+    a.file{color:#2563eb;text-decoration:none;font-weight:600}
+    .note{font-size:13px;color:#475569}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>DonationConnect — Files & Functions (brief)</h1>
+    <p>This page lists the main files in the folder and the key UI features / JavaScript functions they provide. Click a file name to open it in the project folder.</p>
+
+    <h2><a class="file" href="project.html">project.html</a></h2>
+    <ul>
+      <li>Header / Hero UI and site navigation.</li>
+      <li>Top-right auth CTA (Login / Sign-up) — simulated behavior only.</li>
+      <li>Hero: "Get Started" button disabled (visual only).</li>
+      <li>Added DonationConnect description block and "Learn More" link.</li>
+      <li>JS:
+        <ul>
+          <li><code>createBtn</code> handler — creates a demo donation and stores it in localStorage under <code>donationconnect:donations</code>, then redirects to <code>track.html?id=...</code>.</li>
+          <li>Sidebar tab switching logic for inline dashboard sections (if present) and hash-based activation.</li>
+          <li>Utility <code>highlightTopNav()</code> — marks top nav active.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h2><a class="file" href="dashboard.html">dashboard.html</a></h2>
+    <ul>
+      <li>Platform dashboard moved to its own page.</li>
+      <li>Sidebar with four tabs: Overview, Donation Drives, Reports & Analytics, Modules.</li>
+      <li>Main content sections:
+        <ul>
+          <li><strong>Overview</strong> — cards for Active Users, Active Donations, Pending Deliveries.</li>
+          <li><strong>Donation Drives</strong> — lists drives saved in localStorage key <code>donationconnect:drives</code>.</li>
+          <li><strong>Reports</strong> — basic analytics rendered from stored data.</li>
+          <li><strong>Modules</strong> — buttons opening module pages.</li>
+        </ul>
+      </li>
+      <li>JS functions:
+        <ul>
+          <li><code>setActiveTab(tabId)</code> — activates sidebar tab and triggers render as needed.</li>
+          <li><code>renderDrives()</code> — renders drives list from localStorage.</li>
+          <li><code>renderReports()</code> — simple reports (totals, by-status).</li>
+          <li><code>renderOverview()</code> — fills overview stats.</li>
+          <li><code>readJSON(key)</code>, <code>escapeHtml(s)</code>.</li>
+          <li>Drive actions: <code>editDrive(id)</code>, <code>deleteDrive(id)</code>.</li>
+          <li>Demo donation creation similar to project.html (uses <code>donationconnect:donations</code>).</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h2><a class="file" href="create-drive.html">create-drive.html</a></h2>
+    <ul>
+      <li>Form for creating a new Donation Drive.</li>
+      <li>JS:
+        <ul>
+          <li><code>uuidv4()</code> — generates an id.</li>
+          <li>Form submit handler — validates required fields, saves drive to localStorage under <code>donationconnect:drives</code>, then redirects back to <code>dashboard.html</code>.</li>
+          <li>Cancel button — returns to dashboard.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h2><a class="file" href="module.html">module.html</a> (Modules index)</h2>
+    <ul>
+      <li>Modules index UI: Admin, Donor, Recipient, Logistics cards with descriptions and "Open" links.</li>
+      <li>Search: input with client-side filter — hides/shows module cards by title.</li>
+      <li>Styling: professional layout and responsive grid.</li>
+    </ul>
+
+    <h2>Module pages</h2>
+    <ul>
+      <li><a class="file" href="admin-module.html">admin-module.html</a>
+        <ul>
+          <li>Admin module shell (id=<code>admin</code>) with forms and professional CSS styling.</li>
+          <li>Styles include form controls, tables and utility classes; no heavy JS included in file.</li>
+        </ul>
+      </li>
+      <li><a class="file" href="donor-module.html">donor-module.html</a>
+        <ul>
+          <li>Donor UI shell (id=<code>donor</code>) with form layout, inputs, and polished controls.</li>
+          <li>CSS focuses on readable forms and responsive behavior; no page-level JS required.</li>
+        </ul>
+      </li>
+      <li><a class="file" href="recipient-module.html">recipient-module.html</a>
+        <ul>
+          <li>Recipient UI shell (id=<code>recipient</code>) with form controls, textareas, and buttons.</li>
+        </ul>
+      </li>
+      <li><a class="file" href="logistics-module.html">logistics-module.html</a>
+        <ul>
+          <li>Logistics UI (id=<code>logistics</code>) including:
+            <ul>
+              <li>Assign Delivery select(s) — options can be shown one-per-line using <code>size</code> attribute or as normal selects.</li>
+              <li>Delivery Agent Name input, Delivery Status select and Update button (form layout ensures one control per row with spacing).</li>
+              <li>Professional CSS for panels, map placeholder and lists.</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    <h2>Other notes</h2>
+    <ul>
+      <li>Local storage keys used:
+        <ul>
+          <li><code>donationconnect:drives</code> — stores drives created via create-drive.</li>
+          <li><code>donationconnect:donations</code> — stores donations created by demo flows.</li>
+        </ul>
+      </li>
+      <li>Many pages include shared CSS patterns (variables, responsive grid, card styles).</li>
+      <li>If you want a single documentation page to include more details (function signatures, sample data), tell me which files to expand and I will update this page.</li>
+    </ul>
+
+    <p class="note">To open a listed file, click the filename (relative link). For more detailed API-style docs, specify which functions you want expanded.</p>
+  </div>
+</body>
+</html>

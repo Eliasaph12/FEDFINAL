@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation Request Form</title>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f4f7;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 45%;
+            margin: auto;
+            margin-top: 30px;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+            margin-top: 15px;
+            display: block;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #aaa;
+        }
+        textarea {
+            resize: vertical;
+            height: 80px;
+        }
+        button {
+            width: 100%;
+            background: #0077cc;
+            padding: 12px;
+            color: white;
+            border: none;
+            margin-top: 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #005fa3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Donation Request</h2>
+
+        <form id="donationForm">
+            
+            <label>Name</label>
+            <input type="text" id="name" required>
+
+            <label>Phone Number</label>
+            <input type="tel" id="phone" required>
+
+            <label>Email</label>
+            <input type="email" id="email" required>
+
+            <label>Delivery Address</label>
+            <textarea id="delivery" required></textarea>
+
+            <label>Type of Need</label>
+            <select id="type" required>
+                <option value="">--Select Need Type--</option>
+                <option>Food</option>
+                <option>Clothes</option>
+                <option>Stationary</option>
+                <option>Medical Supplies</option>
+                <option>Daily Essentials</option>
+                <option>Others</option>
+            </select>
+
+            <label>For organisations / others
+            </label>
+            <select id="organisations" required>
+                <option value="">--Select Target Group--</option>
+                <option>Orphanage</option>
+                <option>Pension Holders</option>
+                <option>Elderly People</option>
+                <option>Homeless</option>
+                <option>Disabled Individuals</option>
+                <option>Rural Families</option>
+            </select>
+
+            <button type="submit">Submit Request</button>
+        </form>
+
+        <div style="margin-block-start:18px;">
+            <div style="display:flex; gap:8px; align-items:center; margin-block-end:8px;">
+                <button id="btnSeedRequests" style="background:#2e8df6; color:white; padding:8px 12px; border-radius:6px; border:none; cursor:pointer">Seed example requests</button>
+                <button id="btnClearRequests" style="background:#f3f4f6; color:#333; padding:8px 12px; border-radius:6px; border:1px solid #ddd; cursor:pointer">Clear all requests</button>
+            </div>
+
+            <h3 style="margin-block-end:8px">Saved Requests</h3>
+            <div id="requestsList">
+                <!-- request items will be rendered here -->
+            </div>
+        </div>
+        </form>
+    </div>
+
+    <script src="js/requests.js"></script>
+    <script>
+        // Helper to render the saved requests using RequestsDB (localStorage-backed)
+        function formatDate(iso) { try { return new Date(iso).toLocaleString(); } catch { return iso; } }
+
+        function renderRequests() {
+            const out = document.getElementById('requestsList');
+            const list = RequestsDB.getAll();
+            if (!list || list.length === 0) {
+                out.innerHTML = '<p style="color:#6b7280">No requests yet — use the form to add a request.</p>';
+                return;
+            }
+
+            const html = list.slice().reverse().map(r => {
+                const last = (r.history && r.history[r.history.length-1]) || {};
+                return `
+                <div style="border:1px solid #e5e7eb; padding:12px; border-radius:8px; margin-block-end:10px; background:white;">
+                    <div style="display:flex; gap:12px; align-items:center;">
+                        <div style="flex:1">
+                            <strong>${r.name} <span style="color:#6b7280; font-weight:600">(${r.id})</span></strong>
+                            <div style="color:#6b7280; font-size:.9rem">${r.type} • ${r.organisations}</div>
+                            <div style="color:#374151; margin-block-start:6px">Delivery: ${r.delivery}</div>
+                        </div>
+                        <div style="text-align:right">
+                            <div style="font-weight:600; font-size:.95rem">${r.status.replace('_',' ')}</div>
+                            <div style="color:#6b7280; font-size:.8rem">${formatDate(r.created_at)}</div>
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:8px; margin-block-start:10px; align-items:center">
+                        <select data-id="${r.id}" class="statusSelect" style="padding:8px; border-radius:6px; border:1px solid #ddd">
+                            <option value="open" ${r.status==='open' ? 'selected':''}>open</option>
+                            <option value="in_progress" ${r.status==='in_progress' ? 'selected':''}>in_progress</option>
+                            <option value="fulfilled" ${r.status==='fulfilled' ? 'selected':''}>fulfilled</option>
+                            <option value="cancelled" ${r.status==='cancelled' ? 'selected':''}>cancelled</option>
+                        </select>
+                        <input data-id="${r.id}" class="noteInput" type="text" placeholder="Optional note (e.g. delivery scheduled)" style="flex:1;padding:8px;border-radius:6px;border:1px solid #ddd" />
+                        <button data-id="${r.id}" class="btnUpdate" style="background:#059669;color:white;padding:8px;border-radius:6px;border:none;cursor:pointer">Update</button>
+                        <button data-id="${r.id}" class="btnDelete" style="background:#ef4444;color:white;padding:8px;border-radius:6px;border:none;cursor:pointer">Delete</button>
+                    </div>
+                    <div style="margin-block-start:10px; color:#6b7280; font-size:.85rem">History: ${ (r.history||[]).slice(-3).map(h=> `${h.status} @ ${formatDate(h.time)}${h.note? ' — '+h.note:''}` ).join(' • ') }</div>
+                </div>
+                `;
+            }).join('');
+
+            out.innerHTML = html;
+
+            // attach handlers
+            document.querySelectorAll('.btnUpdate').forEach(b => {
+                b.addEventListener('click', (ev) => {
+                    const id = ev.currentTarget.dataset.id;
+                    const select = document.querySelector(`select[data-id="${id}"]`);
+                    const note = document.querySelector(`input[data-id="${id}"]`).value.trim();
+                    try {
+                        const u = RequestsDB.updateStatus(id, select.value, note);
+                        if (!u) alert('Request not found');
+                        renderRequests();
+                    } catch (err) { alert('Failed to update: '+err.message); }
+                });
+            });
+
+            document.querySelectorAll('.btnDelete').forEach(b => {
+                b.addEventListener('click', (ev) => {
+                    const id = ev.currentTarget.dataset.id;
+                    if (!confirm('Delete request '+id+'?')) return;
+                    RequestsDB.deleteRequest(id);
+                    renderRequests();
+                });
+            });
+        }
+
+        // Wire up form submission — save to RequestsDB and clear form
+        document.getElementById('donationForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const payload = {
+                name: document.getElementById('name').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                delivery: document.getElementById('delivery').value.trim(),
+                pickup: document.getElementById('pickup').value.trim(),
+                type: document.getElementById('type').value,
+                organisations: document.getElementById('organisations').value
+            };
+
+            const item = RequestsDB.createRequest(payload);
+            alert('Request submitted — id: ' + item.id);
+
+            // clear form
+            document.getElementById('donationForm').reset();
+            renderRequests();
+        });
+
+        // seed / clear controls
+        document.getElementById('btnSeedRequests').addEventListener('click', ()=>{ RequestsDB.seedRequests(); renderRequests(); alert('Seeded sample requests (r1, r2).'); });
+        document.getElementById('btnClearRequests').addEventListener('click', ()=>{ if(confirm('Clear all requests?')){ localStorage.removeItem('donationconnect:requests'); renderRequests(); } });
+
+        // initial render
+        renderRequests();
+    </script>
+
+</body>
+</html>

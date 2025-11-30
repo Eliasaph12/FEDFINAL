@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DonationConnect - Report & Analysis</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            margin: 0;
+            background: #f6f6f6;
+        }
+
+        header {
+            background: #333;
+            color: white;
+            padding: 20px 40px;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .container {
+            padding: 35px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            text-align: center;
+            transition: .3s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .value {
+            font-size: 40px;
+            font-weight: bold;
+        }
+
+        .label {
+            font-size: 17px;
+            color: #555;
+        }
+
+        .section-title {
+            margin-top: 50px;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .chart-container {
+            margin-top: 25px;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        }
+
+        .analysis-box {
+            margin-top: 30px;
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+            line-height: 1.8;
+        }
+
+        /* small button utilities for the top-of-page dashboard links */
+        .btn {
+            display: inline-block;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: white;
+        }
+
+        .btn-primary { background: #2c3e50; padding: 8px 12px; }
+        .btn-secondary { background: #fff; color: #333; border: 1px solid #ddd; padding: 8px 12px; }
+
+    </style>
+</head>
+
+<body>
+
+<header>DonationConnect – Report & Analysis Dashboard</header>
+
+<div class="container">
+
+    <!-- Link back to platform dashboard -->
+    <div style="margin:14px 0; display:flex; gap:10px; align-items:center;">
+        <a href="project.html" class="btn btn-primary">← Back to Dashboard</a>
+    </div>
+
+    <!-- Dashboard Cards -->
+    <div class="cards">
+        <div class="card">
+            <div class="value">1,254</div>
+            <div class="label">Active Users</div>
+        </div>
+        <div class="card">
+            <div class="value">542</div>
+            <div class="label">Active Donations</div>
+        </div>
+        <div class="card">
+            <div class="value">89</div>
+            <div class="label">Pending Deliveries</div>
+        </div>
+        <div class="card">
+            <div class="value">327</div>
+            <div class="label">Completed This Month</div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <h2 class="section-title">Visual Analysis</h2>
+
+    <!-- Bar Chart -->
+    <div class="chart-container">
+        <canvas id="barChart"></canvas>
+    </div>
+
+    <!-- Pie Chart -->
+    <div class="chart-container">
+        <canvas id="pieChart"></canvas>
+    </div>
+
+    <!-- Trend Line Chart -->
+    <div class="chart-container">
+        <canvas id="lineChart"></canvas>
+    </div>
+
+    <!-- Analysis text -->
+    <h2 class="section-title">Statistical Insights</h2>
+    <div class="analysis-box">
+        <strong>• User Engagement:</strong> 1,254 active users show strong platform growth.<br>
+        <strong>• Donation Activity:</strong> 542 active donations indicate high donor participation.<br>
+        <strong>• Delivery Load:</strong> 89 pending deliveries suggest slight logistical backlog.<br>
+        <strong>• Completion Ranking:</strong> 327 monthly completions represent 60% of total active donations.<br>
+        <strong>• Trend:</strong> The overall donation completion rate is rising steadily month-over-month.<br>
+    </div>
+
+</div>
+
+<script>
+    // BAR CHART
+    new Chart(document.getElementById("barChart"), {
+        type: 'bar',
+        data: {
+            labels: ["Active Users", "Active Donations", "Pending Deliveries", "Completed This Month"],
+            datasets: [{
+                label: "Platform Statistics",
+                data: [1254, 542, 89, 327],
+            }]
+        }
+    });
+
+    // PIE CHART
+    new Chart(document.getElementById("pieChart"), {
+        type: 'pie',
+        data: {
+            labels: ["Active Donations", "Pending Deliveries", "Completed"],
+            datasets: [{
+                data: [542, 89, 327],
+            }]
+        }
+    });
+
+    // TREND LINE CHART (Example monthly growth)
+    new Chart(document.getElementById("lineChart"), {
+        type: 'line',
+        data: {
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+            datasets: [{
+                label: "Monthly Completed Donations",
+                data: [210, 240, 250, 280, 310, 327],
+                borderWidth: 3,
+                tension: 0.3
+            }]
+        }
+    });
+</script>
+
+</body>
+</html>
+

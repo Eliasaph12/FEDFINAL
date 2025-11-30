@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Register — DonationConnect</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root{
+      --bg:#f5f7fb; --card:#fff; --primary:#2563eb; --muted:#6b7280; --text:#0b1220;
+      --radius:12px; --shadow:0 12px 30px rgba(11,18,32,0.06); --max-w:720px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;background:var(--bg);color:var(--text);display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+    .card{width:100%;max-width:720px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;border:1px solid rgba(11,18,32,0.03)}
+    h1{margin:0 0 8px;font-size:1.25rem}
+    p.lead{margin:0 0 16px;color:var(--muted)}
+
+    form{display:grid;gap:12px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    label{font-size:13px;color:var(--muted);font-weight:600;margin-bottom:6px;display:block}
+    input[type="text"],input[type="email"],input[type="tel"],input[type="password"],select{
+      width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(11,18,32,0.06);background:linear-gradient(180deg,#fff,#fbfdff);font-size:14px;outline:none;
+    }
+    .actions{display:flex;gap:8px;justify-content:flex-end;margin-top:6px}
+    .btn{padding:10px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:700}
+    .btn.primary{background:linear-gradient(90deg,var(--primary),#1e40af);color:#fff}
+    .btn.ghost{background:transparent;border:1px solid rgba(11,18,32,0.06);color:var(--primary)}
+    .note{font-size:13px;color:var(--muted)}
+
+    @media (max-width:720px){ .row{grid-template-columns:1fr} .actions{flex-direction:column-reverse} }
+  </style>
+</head>
+<body>
+  <div class="card" role="main" aria-labelledby="reg-heading">
+    <h1 id="reg-heading">Create an account</h1>
+    <p class="lead">Register as Donor, Recipient, Logistics or Admin to use DonationConnect.</p>
+
+    <form id="registerForm" novalidate>
+      <div class="row">
+        <div>
+          <label for="fullname">Full name *</label>
+          <input id="fullname" name="fullname" type="text" required autocomplete="name" />
+        </div>
+        <div>
+          <label for="email">Email *</label>
+          <input id="email" name="email" type="email" required autocomplete="email" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label for="phone">Phone *</label>
+          <input id="phone" name="phone" type="tel" required placeholder="+91 98765 43210" />
+        </div>
+        <div>
+          <label for="password">Password *</label>
+          <input id="password" name="password" type="password" required />
+        </div>
+      </div>
+
+      <div>
+        <label for="role">Role *</label>
+        <select id="role" name="role" required>
+          <option value="">-- Select role --</option>
+          <option value="Donor">Donor</option>
+          <option value="Recipient">Recipient</option>
+          <option value="Logistics">Logistics</option>
+          <option value="Admin">Admin</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="org">Organization / Affiliation (optional)</label>
+        <input id="org" name="org" type="text" placeholder="NGO or group name (optional)" />
+      </div>
+
+      <div style="display:flex;gap:12px;align-items:center">
+        <input id="agree" name="agree" type="checkbox" required />
+        <label for="agree" style="margin:0;font-size:13px;color:var(--muted)">I agree to be contacted about platform activity *</label>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn ghost" id="cancelBtn">Cancel</button>
+        <button type="submit" class="btn primary">Register</button>
+      </div>
+
+      <div style="margin-top:8px;color:var(--muted);font-size:13px">
+        Already have an account? <a href="login.html">Log in</a>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    (function(){
+      const KEY = 'donationconnect:users';
+      const form = document.getElementById('registerForm');
+      const cancel = document.getElementById('cancelBtn');
+
+      function uuidv4(){ return 'u' + 'xxxxxxxx'.replace(/[xy]/g, function(c){ const r=(Math.random()*16)|0; return r.toString(16); }); }
+
+      cancel.addEventListener('click', () => location.href = 'project.html');
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const fullname = form.fullname.value.trim();
+        const email = form.email.value.trim();
+        const phone = form.phone.value.trim();
+        const password = form.password.value;
+        const role = form.role.value;
+        const org = form.org.value.trim();
+        const agree = form.agree.checked;
+
+        if (!fullname || !email || !phone || !password || !role || !agree) {
+          return alert('Please complete all required fields.');
+        }
+
+        const user = {
+          id: uuidv4(),
+          name: fullname,
+          email, phone,
+          password: btoa(password).slice(0, 64), // lightweight obfuscation only
+          role, org,
+          approved: role === 'Admin' ? false : true, // admin accounts require approval
+          createdAt: new Date().toISOString()
+        };
+
+        try {
+          const list = JSON.parse(localStorage.getItem(KEY) || '[]');
+          list.push(user);
+          localStorage.setItem(KEY, JSON.stringify(list));
+          alert('Registration saved. ' + (user.approved ? 'You can now sign in.' : 'Admin accounts require approval.'));
+          location.href = 'dashboard.html';
+        } catch (err) {
+          console.error(err);
+          alert('Failed to save registration.');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

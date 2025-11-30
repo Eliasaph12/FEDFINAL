@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Login — DonationConnect</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --secondary: #667eea;
+      --accent: #e74c3c;
+      --success: #2ecc71;
+      --light: #f5f7fa;
+      --border: #e0e0e0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #222;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 450px;
+      background: white;
+      border-radius: 16px;
+      padding: 45px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 300px;
+      height: 300px;
+      background: rgba(102, 126, 234, 0.05);
+      border-radius: 50%;
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 1;
+    }
+
+    .back:hover {
+      gap: 12px;
+      color: #2c3e50;
+    }
+
+    .back i {
+      transform: translateY(-1px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand i {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 36px;
+    }
+
+    .brand h1 {
+      font-size: 28px;
+      color: #2c3e50;
+      font-weight: 700;
+    }
+
+    p.lead {
+      color: #666;
+      margin-bottom: 28px;
+      font-size: 15px;
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+    }
+
+    form {
+      position: relative;
+      z-index: 1;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #2c3e50;
+      font-size: 14px;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="email"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      background: #fafbfc;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    input[type="email"]:focus {
+      outline: none;
+      border-color: #667eea;
+      background: white;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--border);
+      color: #667eea;
+      font-weight: 600;
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .btn-outline:hover {
+      background: rgba(102, 126, 234, 0.05);
+      border-color: #667eea;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 8px;
+      margin-top: 18px;
+      color: #666;
+      font-size: 13px;
+    }
+
+    .link {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .link:hover {
+      color: #764ba2;
+      text-decoration: underline;
+    }
+
+    .small {
+      font-size: 13px;
+      color: #666;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 30px 24px;
+      }
+
+      .brand h1 {
+        font-size: 24px;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      input[type="text"],
+      input[type="password"],
+      input[type="email"] {
+        padding: 11px 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <a href="project.html" class="back"><i class="fas fa-arrow-left"></i> Back to Home</a>
+    <div class="brand">
+      <i class="fas fa-hands-helping"></i>
+      <h1>DonationConnect — Login</h1>
+    </div>
+    <p class="lead">Welcome back! Sign in with your account to continue.</p>
+
+    <form id="loginForm" onsubmit="handleSubmit(event)">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" name="email" placeholder="you@example.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input id="password" type="password" name="password" placeholder="Enter your password" required>
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="btn btn-primary">Sign in</button>
+        <a href="register.html" class="btn btn-outline">Create account</a>
+      </div>
+
+      <div class="footer-links">
+        <span class="small">Forgot your password? <a href="#" class="link">Reset</a></span>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    function handleSubmit(e){
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim().toLowerCase();
+      const password = document.getElementById('password').value;
+
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      const user = users.find(u => u.email === email && u.password === password);
+      if (!user) {
+        alert('Invalid email or password — please try again or create an account.');
+        return;
+      }
+
+      // set current user and redirect to donations
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      alert('Signed in — redirecting to Donations page.');
+      window.location.href = 'DonationDB.html';
+    }
+  </script>
+</body>
+</html>
